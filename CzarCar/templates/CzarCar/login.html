@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Log in</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'CzarCar/login.css' %}">
+</head>
+<body>
+<main>
+    <div class="row">
+        {% load static %} <img src="{% static "media/logo.png" %}" alt="home"/>
+        <div class="colm-form">
+            <div class="form-container">
+                <form method="POST" action="">
+                    {% csrf_token %}
+
+                    <input type="text" name="username" placeholder="Email..." class="form-control">
+                    <input type="password" name="password" placeholder="Password..." class="form-control" >
+                    <input class="btn-login" type="submit" value="Login">
+                    {#                    <button class="btn-login">Login</button>#}
+                    <a href="#">Forgotten password?</a>
+                    <a href="/register" class="btn-new">Create new Account</a>
+                </form>
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>
