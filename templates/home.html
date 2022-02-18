@@ -42,33 +42,30 @@
     <div class="sidebar grey darken-4 z-depth-4">
         {% load static %} <img src="{% static "media/logo_navbar.png" %}" alt="home"/>
         <ul>
-            <li><a href="{% url 'home' %}"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="#"><i class="fas fa-user"></i>Profile</a></li>
-            <li><a href="#"><i class="fas fa-address-card"></i>About</a></li>
-            <li><a href="#"><i class="fas fa-project-diagram"></i>portfolio</a></li>
-            <li><a href="#"><i class="fas fa-blog"></i>Blogs</a></li>
-            <li><a href="#"><i class="fas fa-address-book"></i>Contact</a></li>
-            <li><a href="#"><i class="fas fa-map-pin"></i>Map</a></li>
+            <li><a href="{% url 'home' %}"><i class="fas fa-home"></i>  Home</a></li>
+            <li><a href="#"><i class="fas fa-user"></i>  Profile</a></li>
+            <li><a href="{% url 'about' %}"><i class="fas fa-address-card"></i>  About</a></li>
+            <li><a href="#"><i class="fas fa-project-diagram"></i>  Portfolio</a></li>
+            <li><a href="#"><i class="fas fa-blog"></i>  Blogs</a></li>
+            <li><a href="{% url 'contact' %}"><i class="fas fa-address-book"></i>  Contact</a></li>
+            <li><a href="#"><i class="fas fa-map-pin"></i>  Map</a></li>
         </ul>
     </div>
-    <div class="main_content">
-    <!-- content -->
+
+    <div class="main">
+        <!-- content -->
         <main>
             {% block content %}
 
             {% endblock %}
         </main>
 
-        </div>
     </div>
 </div>
 
 
-
-
-
-<!-- Script -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Script -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>

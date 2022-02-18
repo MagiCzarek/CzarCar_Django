@@ -27,19 +27,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    #My apps
+    # My apps
     'CzarCar',
-    #Django app
+    # Django app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mapwidgets',
+
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,6 @@ AUTH_USER_MODEL = 'CzarCar.Account'
 
 WSGI_APPLICATION = 'CzarCar_Django.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -86,12 +86,11 @@ DATABASES = {
     }
 }
 
-#MEDIA PATH
+# MEDIA PATH
 # typically, os.path.join(os.path.dirname(__file__), 'media')
 
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -111,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -124,7 +122,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

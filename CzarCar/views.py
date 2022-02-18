@@ -58,3 +58,14 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+def contact_view(request):
+    print(request.headers)
+    return render(request,'CzarCar/contact.html',{})
+def about_view(request):
+    print(request.headers)
+    return render(request,'CzarCar/about.html',{})
+
+def about_view(request):
+    print(request.headers)
+    return render(request,'CzarCar/about.html',{})
