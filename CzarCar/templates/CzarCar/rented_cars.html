@@ -1,0 +1,45 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<div>
+        <h3><b>Your rents </b></h3>
+    </div>
+    <table class="table-fill">
+
+        <tr>
+            <th class="text-left">Czar</th>
+            <th class="text-left">Delivery adress</th>
+            <th class="text-left">price</th>
+            <th class="text-left">rent time</th>
+{#            <th class="text-left">Photo</th>#}
+{#            <th class="text-left">Rent</th>#}
+        </tr>
+
+
+            {% for rent in rents %}
+                <tr>
+                    <td>{{ rent.car.name }}</td>
+
+                    <td>{{ rent.delivery_adress }}</td>
+
+                    <td>{{ rent.rent_price }}</td>
+
+
+                    <td >{{ rent.rent_time }}</td>
+
+{#                    {% if i.image %}#}
+{#                        <td>#}
+{#                            <img src="{{ i.image.url }}" alt="" class="prod-size">#}
+{#                        </td>#}
+{#                    {% endif %}#}
+{#                    <td>{{ i.category }}</td>#}
+{#                    <td><li><a class="btn btn-sm" href="/register/">rent</a></li></td>#}
+                </tr>
+
+
+            {% endfor %}
+
+
+    </table>
+
+{% endblock %}

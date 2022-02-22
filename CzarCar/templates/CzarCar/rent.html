@@ -1,0 +1,60 @@
+{% extends 'home.html' %}
+
+{% block content %}
+    <div>
+        <h3><b>Our cars: </b></h3>
+    </div>
+    <table class="table-fill">
+
+        <tr>
+            <th class="text-left">Car</th>
+            <th class="text-left">Price</th>
+            <th class="text-left">Category</th>
+            <th class="text-left">year</th>
+            {#            <th class="text-left">Photo</th>#}
+            <th class="text-left">Availability</th>
+            <th class="text-left">Rent</th>
+        </tr>
+
+
+        {% for car in cars %}
+            <tr>
+                <td>{{ car.name }}</td>
+
+                <td>{{ car.price }}</td>
+
+                <td>{{ car.category }}</td>
+
+                <td class="text-right">{{ car.year_production }}</td>
+
+
+                {#                    {% if i.image %}#}
+                {#                        <td>#}
+                {#                            <img src="{{ i.image.url }}" alt="" class="prod-size">#}
+                {#                        </td>#}
+                {#                    {% endif %}#}
+                {#                    <td>{{ i.category }}</td>#}
+
+                {#                        <td>#}
+                {#                            <img src="{{ i.image.url }}" alt="" class="prod-size">#}
+                {#                        </td>#}
+                {% if car.status == 'NOT_RENTED' %}
+                    <td>Available</td>
+                    <td>
+
+                    <li><a class="btn btn-sm" href="/register/">rent</a></li>
+                </td>
+                {% else %}
+                    <td>Not available</td>
+                {% endif %}
+
+
+            </tr>
+
+
+        {% endfor %}
+
+
+    </table>
+
+{% endblock %}

@@ -4,12 +4,13 @@ from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import login, authenticate, logout
 
-from .decorators import unauthenticated_user, admin_only
-from .models import Question, Choice
+from .decorators import unauthenticated_user, admin_only, logged_user
+
 from CzarCar.forms import RegistrationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
+from .models import *
 
 
 # Create your views here.
@@ -27,7 +28,6 @@ def home_view(request):
 
 @unauthenticated_user
 def registration_view(request):
-
     form = RegistrationForm()
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -40,9 +40,9 @@ def registration_view(request):
     context = {'form': form}
     return render(request, 'CzarCar/registration.html', context)
 
+
 @unauthenticated_user
 def login_view(request):
-
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -55,17 +55,45 @@ def login_view(request):
     context = {}
     return render(request, 'CzarCar/login.html', context)
 
+
 def logout_view(request):
     logout(request)
     return redirect('home')
 
+
 def contact_view(request):
     print(request.headers)
-    return render(request,'CzarCar/contact.html',{})
-def about_view(request):
-    print(request.headers)
-    return render(request,'CzarCar/about.html',{})
+    return render(request, 'CzarCar/contact.html', {})
+
 
 def about_view(request):
     print(request.headers)
-    return render(request,'CzarCar/about.html',{})
+    return render(request, 'CzarCar/about.html', {})
+
+
+def car_view(request):
+    # cars = Car.objects.filter(status='NOT_RENTED')
+    cars = Car.objects.all()
+    context = {'cars': cars}
+    return render(request, 'CzarCar/rent.html', context)
+
+
+def map_view(request):
+    print(request.headers)
+    return render(request, 'CzarCar/map.html', {})
+
+
+@logged_user
+def profile_view(request):
+    print(request.headers)
+    return render(request, 'CzarCar/profile.html', {})
+
+
+@logged_user
+def your_rent_view(request):
+    print(request.headers)
+    user = request.user
+    rents = Rent.objects.filter(account=user)
+    context = {'rents': rents}
+
+    return render(request, 'CzarCar/rented_cars.html', context)

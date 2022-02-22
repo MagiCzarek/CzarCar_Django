@@ -1,29 +1,18 @@
 import datetime
 from django.utils import timezone
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,Group
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group
 
 from django.db import models
+from django.core.exceptions import ValidationError
+import re
 
 
 # Create your models here.
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
 
-    def __str__(self):
-        return self.question_text
-
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
-
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.choice_text
+class DrivingLicense(models.Model):
+    name = models.CharField(max_length=200)
+    second_name = models.CharField(max_length=200)
+    license_number = models.CharField(max_length=8, unique=True, null=False)
 
 
 class AccountManager(BaseUserManager):
@@ -54,6 +43,7 @@ class AccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=50, unique=True)
     name = models.CharField(max_length=24)
@@ -64,9 +54,7 @@ class Account(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-
-
-
+    driving_license = models.OneToOneField(DrivingLicense, null=True, on_delete=models.SET_NULL)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -81,3 +69,34 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Car(models.Model):
+    STATUS = (
+        ('RENTED', 'RENTED'),
+        ('NOT_RENTED', 'NOT_RENTED')
+    )
+    name = models.CharField(max_length=200, null=True)
+    price = models.FloatField(null=True)
+    category = models.CharField(max_length=200, null=True)
+    year_production = models.IntegerField(null=True)
+    image = models.ImageField(upload_to='uploads/', null=True)
+    description = models.CharField(max_length=200, null=True)
+    status = models.CharField(max_length=200, null=True, choices=STATUS)
+
+    def __str__(self):
+        return self.name
+
+
+class Rent(models.Model):
+    account = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    car = models.ForeignKey(Car, null=True, on_delete=models.SET_NULL)
+    delivery_adress = models.CharField(max_length=200)
+    rent_price = models.FloatField(null=True)
+    rent_time = models.IntegerField(null=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+
+
+    def calculate_price(self):
+        self.rent_price = self.account.price * self.rent_time

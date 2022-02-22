@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
-from CzarCar.views import home_view, contact_view, about_view
+from CzarCar.views import home_view, contact_view, about_view, car_view, map_view, profile_view, your_rent_view
 
 from CzarCar.views import registration_view, login_view, logout_view
 
@@ -32,6 +32,11 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('contact/', contact_view, name='contact'),
     path('about/', about_view, name='about'),
+    path('rent/', car_view, name='rent'),
+    path('map/', map_view, name='map'),
+    path('profile/', profile_view, name='profile'),
+    path('rented_cars.html/', your_rent_view, name='rented_cars'),
+
 
 ]
 

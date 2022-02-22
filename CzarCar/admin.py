@@ -3,10 +3,15 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Question, Choice, Account
+from .models import Account,Rent,Car, DrivingLicense
+from django.contrib.gis.db import models
 
-admin.site.register(Question)
-admin.site.register(Choice)
+
+admin.site.register(Rent)
+admin.site.register(Car)
+admin.site.register(DrivingLicense)
+
+
 
 
 
@@ -20,3 +25,6 @@ class AccountAdmin(UserAdmin):
 
 
 admin.site.register(Account,AccountAdmin)
+
+
+

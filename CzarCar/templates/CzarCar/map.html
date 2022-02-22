@@ -1,5 +1,23 @@
 {% extends 'home.html' %}
 
 {% block content %}
-    {{ form.media }}
+    <h1> Adress : Fort Wola 12c/20</h1>
+    <div id='map' style='width: 800px; height: 800px;'></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiczE4ODIzIiwiYSI6ImNrenlwanlmajAybGYza2xneGtjbmtsOG0ifQ.cZr1tfPkD_j2J-4hpgLpOQ';
+        var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [20.932910, 52.229096],
+        zoom: 14,
+        anchor: 'center'
+
+        });
+        const marker = new mapboxgl.Marker()
+        .setLngLat([20.932910, 52.229096])
+        .addTo(map);
+
+
+    </script>
+
 {% endblock %}
