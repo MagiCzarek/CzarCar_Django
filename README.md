@@ -7,7 +7,7 @@ Install the required dependencies by running
 ```
 pip -r requirements.txt
 ```
-Here are some screens of application
+## Here are some screens of application
 ### Contact page:
 ![image](https://user-images.githubusercontent.com/61821685/158459543-dfd678cd-f458-4636-99de-c0448856fd4e.png)
 
