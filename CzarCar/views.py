@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 
 from .decorators import unauthenticated_user, admin_only, logged_user
 
-from CzarCar.forms import RegistrationForm
+from CzarCar.forms import RegistrationForm, EditDrivingLicenseForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
@@ -73,9 +73,35 @@ def about_view(request):
 
 def car_view(request):
     # cars = Car.objects.filter(status='NOT_RENTED')
-    cars = Car.objects.all()
-    context = {'cars': cars}
-    return render(request, 'CzarCar/rent.html', context)
+    if request.method == 'POST':
+        car_id = request.POST['submit']
+        cars = Car.objects.filter(id=car_id)
+        print('cars')
+        context = {'cars': cars}
+        return render(request, 'CzarCar/payment.html', context)
+    else:
+        cars = Car.objects.all()
+        context = {'cars': cars}
+        return render(request, 'CzarCar/rent.html', context)
+
+
+@logged_user
+def payment_view(request):
+    user = request.user
+    driving_licenses = DrivingLicense.objects.filter(account=user)
+    if driving_licenses is None:
+
+        if request.method =='POST':
+            days = request.POST.get('days')
+            adress = request.POST.get('address')
+            # rent = Rent(account=user,car=, delivery_adress=adress)
+
+        else:
+            return render(request, 'CzarCar/payment.html',{})
+    else:
+
+        messages.info(request, 'You need to add driving license')
+        return render(request, 'CzarCar/payment.html',{})
 
 
 def map_view(request):
@@ -85,15 +111,34 @@ def map_view(request):
 
 @logged_user
 def profile_view(request):
-    print(request.headers)
-    return render(request, 'CzarCar/profile.html', {})
+    user = request.user
+    driving_licenses = DrivingLicense.objects.filter(account=user)
+    if driving_licenses is None:
+
+        if request.method == 'POST':
+            form = EditDrivingLicenseForm(request.POST)
+
+            if form.is_valid():
+                form.account = user
+                form.save()
+                return redirect('CzarCar/profile.html')
+
+        else:
+            form = EditDrivingLicenseForm(instance=request.user)
+            context = {'form': form}
+            return render(request, 'CzarCar/edit_profile.html', context)
+    else:
+
+        context = {'driving_licenses': driving_licenses}
+        return render(request, 'CzarCar/profile.html', context)
 
 
 @logged_user
 def your_rent_view(request):
-    print(request.headers)
-    user = request.user
-    rents = Rent.objects.filter(account=user)
-    context = {'rents': rents}
 
-    return render(request, 'CzarCar/rented_cars.html', context)
+        # print(request.headers)
+        user = request.user
+        rents = Rent.objects.filter(account=user)
+        context = {'rents': rents}
+
+        return render(request, 'CzarCar/rented_cars.html', context)

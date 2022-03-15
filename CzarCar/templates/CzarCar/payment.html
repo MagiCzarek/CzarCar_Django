@@ -1,0 +1,23 @@
+{% extends 'home.html' %}
+
+{% block content %}
+    <h3><b>Payment for the rent </b></h3>
+    {% for car in cars %}
+        Name :  {{ car.name }}
+        <br>
+        Payment for a day: {{ car.price }}
+        <br>
+
+        <form method="POST" action="">
+            Type number of days for rent:
+        <input type="text" name="days" placeholder="number of days..." class="form-control">
+            Adress:
+        <input type="text" name="address" placeholder="Address" class="form-control">
+        <input type="text" name="days" placeholder="number of days..." class="form-control">
+
+        <input type="submit"  value="Rent "name="submit">
+
+        </form>
+
+    {% endfor %}
+{% endblock %}

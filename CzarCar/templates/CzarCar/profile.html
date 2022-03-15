@@ -1,6 +1,31 @@
 {% extends 'home.html' %}
 
 {% block content %}
-<h3>PROFILE</h3>
+    <div>
+        <h3><b>Your driving license </b></h3>
+    </div>
+    <table class="table-xd">
 
+        <tr>
+            <th class="text-left">name</th>
+            <th class="text-left">second name</th>
+            <th class="text-left">license number</th>
+        </tr>
+
+
+            {% for driving_license in driving_licenses %}
+                <tr>
+                    <td>{{ driving_license.name}}</td>
+
+                    <td>{{ driving_license.second_name }}</td>
+
+                    <td>{{ driving_license.license_number }}</td>
+
+                </tr>
+
+
+            {% endfor %}
+
+
+    </table>
 {% endblock %}

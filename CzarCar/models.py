@@ -9,32 +9,27 @@ import re
 
 # Create your models here.
 
-class DrivingLicense(models.Model):
-    name = models.CharField(max_length=200)
-    second_name = models.CharField(max_length=200)
-    license_number = models.CharField(max_length=8, unique=True, null=False)
-
 
 class AccountManager(BaseUserManager):
-    def create_user(self, email, nick_name, password=None):
+    def create_user(self, email, username, password=None):
         if not email:
             raise ValueError("User must have an email")
-        if not nick_name:
+        if not username:
             raise ValueError("User must have nickname")
         user = self.model(
             email=self.normalize_email(email),
-            nick_name=nick_name,
+            username=username,
 
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, nick_name, password):
+    def create_superuser(self, email, username, password):
         user = self.create_user(
             email=self.normalize_email(email),
             password=password,
-            nick_name=nick_name
+            username=username,
 
         )
         user.is_admin = True
@@ -46,15 +41,17 @@ class AccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=50, unique=True)
-    name = models.CharField(max_length=24)
-    second_name = models.CharField(max_length=24)
     username = models.CharField(max_length=30, unique=True)
-    join_date = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+    date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
     is_admin = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    driving_license = models.OneToOneField(DrivingLicense, null=True, on_delete=models.SET_NULL)
+    is_superuser = models.BooleanField(default=False)
+    name = models.CharField(max_length=24)
+    second_name = models.CharField(max_length=24)
+
+
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -62,7 +59,7 @@ class Account(AbstractBaseUser):
     object = AccountManager()
 
     def __str__(self):
-        return self.username
+        return self.email
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
@@ -96,7 +93,19 @@ class Rent(models.Model):
     rent_time = models.IntegerField(null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
+    def __str__(self):
+        return str(self.id)
+
+    def calculate_price(self, days):
+        self.rent_price = self.car.price * self.rent_time
 
 
-    def calculate_price(self):
-        self.rent_price = self.account.price * self.rent_time
+
+class DrivingLicense(models.Model):
+    name = models.CharField(max_length=200)
+    second_name = models.CharField(max_length=200)
+    license_number = models.CharField(max_length=8, unique=True, null=False)
+    account = models.OneToOneField(Account, on_delete=models.CASCADE,null=True)
+
+    def __str__(self):
+        return self.license_number
