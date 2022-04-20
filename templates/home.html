@@ -30,9 +30,9 @@
 
             <ul class="maxright">
 
-                <li><a href="/register/">register</a></li>
-                <li><a href="/login/">Login</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="/CzarCar/register/">register</a></li>
+                <li><a href="/CzarCar/login/">Login</a></li>
+                <li><a href="{% url 'CzarCar:logout' %}">Logout</a></li>
                 <span>  {{ request.user }}</span>
             </ul>
         </div>
@@ -44,12 +44,12 @@
         {% load static %} <img src="{% static "media/logo_navbar.png" %}" alt="home"/>
         <ul>
             <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a></li>
-            <li><a href="{% url 'about' %}"><i class="fas fa-address-card"></i> About</a></li>
-            <li><a href="{% url 'rent' %}"><i class="fas fa-solid fa-car"></i> Rent</a></li>
-            <li><a href="{% url 'rented_cars' %}"><i class="fas fa-solid fa-car"></i> Rented Cars</a></li>
-            <li><a href="{% url 'contact' %}"><i class="fas fa-address-book"></i> Contact</a></li>
-            <li><a href="{% url 'map' %}"><i class="fas fa-map-pin"></i> Map</a></li>
+            <li><a href="{% url 'CzarCar:profile' %}"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="{% url 'CzarCar:about' %}"><i class="fas fa-address-card"></i> About</a></li>
+            <li><a href="{% url 'CzarCar:rent' %}"><i class="fas fa-solid fa-car"></i> Rent</a></li>
+            <li><a href="{% url 'CzarCar:rented_cars' %}"><i class="fas fa-solid fa-car"></i> Rented Cars</a></li>
+            <li><a href="{% url 'CzarCar:contact' %}"><i class="fas fa-address-book"></i> Contact</a></li>
+            <li><a href="{% url 'CzarCar:map' %}"><i class="fas fa-map-pin"></i> Map</a></li>
         </ul>
     </div>
 

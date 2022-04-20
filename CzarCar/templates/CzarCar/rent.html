@@ -41,12 +41,14 @@
                 {% if car.status == 'NOT_RENTED' %}
                     <td>Available</td>
                     <td>
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                    <input type="submit"  value="{{ car.id }} "name="submit">
-                    </form>
-                    <li><a class="btn btn-sm" href="/register/">rent</a></li>
-                </td>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+
+                            <input type="hidden" name="car_id" value="{{ car.id }}" class="form-control">
+                            <input class="btn btn-sm" type="submit" value="rent" name="rent">
+                        </form>
+                        {#                    <li><a class="btn btn-sm" href="/register/">rent</a></li>#}
+                    </td>
                 {% else %}
                     <td>Not available</td>
                 {% endif %}

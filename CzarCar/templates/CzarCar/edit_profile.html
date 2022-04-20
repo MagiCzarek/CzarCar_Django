@@ -1,11 +1,17 @@
 {% extends 'home.html' %}
 
 {% block content %}
-    <div class="container">\
-    <form method="post">
+    <div class="container">
+    <form method="POST" action="">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
+        <input type="text" name="name" placeholder="Name..." class="form-control">
+        <input type="text" name="secondname" placeholder="Second name..." class="form-control" >
+        <input type="text" name="license_number" placeholder="license number.." class="form-control" >
+
+        <input type="submit" name="signup_submit" value="Add driving license"/>
+        {% for message in messages %}
+                    <p>{{ message }}</p>
+        {% endfor %}
     </form>
 
     </div>

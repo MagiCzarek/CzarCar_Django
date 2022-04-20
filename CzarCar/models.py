@@ -51,8 +51,6 @@ class Account(AbstractBaseUser):
     name = models.CharField(max_length=24)
     second_name = models.CharField(max_length=24)
 
-
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -88,6 +86,7 @@ class Car(models.Model):
 class Rent(models.Model):
     account = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
     car = models.ForeignKey(Car, null=True, on_delete=models.SET_NULL)
+    car.status = 'RENTED'
     delivery_adress = models.CharField(max_length=200)
     rent_price = models.FloatField(null=True)
     rent_time = models.IntegerField(null=True)
@@ -96,16 +95,15 @@ class Rent(models.Model):
     def __str__(self):
         return str(self.id)
 
-    def calculate_price(self, days):
+    def calculate_price(self):
         self.rent_price = self.car.price * self.rent_time
-
 
 
 class DrivingLicense(models.Model):
     name = models.CharField(max_length=200)
     second_name = models.CharField(max_length=200)
     license_number = models.CharField(max_length=8, unique=True, null=False)
-    account = models.OneToOneField(Account, on_delete=models.CASCADE,null=True)
+    account = models.OneToOneField(Account, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.license_number

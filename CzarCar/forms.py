@@ -24,9 +24,14 @@ class RentForm(ModelForm):
 
 
 class EditDrivingLicenseForm(forms.ModelForm):
+
     class Meta:
         model = DrivingLicense
         fields = (
             'name','second_name','license_number','account')
+
+    def __init__(self, *args, **kwargs):
+        super(EditDrivingLicsenseForm, self).__init__(*args, **kwargs)
+        self.fields['account'].required = False
 
 

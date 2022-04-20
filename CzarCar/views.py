@@ -16,7 +16,6 @@ from .models import *
 # Create your views here.
 
 # @login_required(login_url='login')
-
 def home_view(request):
     if request.user.is_authenticated:
         request.user = f'You are logged as {request.user}'
@@ -73,12 +72,11 @@ def about_view(request):
 
 def car_view(request):
     # cars = Car.objects.filter(status='NOT_RENTED')
-    if request.method == 'POST':
-        car_id = request.POST['submit']
+    if request.method == 'POST' and "rent" in request.POST:
+        car_id = request.POST.get('car_id')
         cars = Car.objects.filter(id=car_id)
-        print('cars')
         context = {'cars': cars}
-        return render(request, 'CzarCar/payment.html', context)
+        return payment_view(request, context)
     else:
         cars = Car.objects.all()
         context = {'cars': cars}
@@ -86,22 +84,31 @@ def car_view(request):
 
 
 @logged_user
-def payment_view(request):
+def payment_view(request, cars):
     user = request.user
+
     driving_licenses = DrivingLicense.objects.filter(account=user)
-    if driving_licenses is None:
+    driving_licenses_count = driving_licenses.count()
+    # print(driving_licenses_count)
+    print(cars)
 
-        if request.method =='POST':
-            days = request.POST.get('days')
+    if driving_licenses_count > 0:
+
+        if request.method == 'POST' and "rent_car" in request.POST:
+            print("git")
+            rent_time = request.POST.get('rent_time')
             adress = request.POST.get('address')
-            # rent = Rent(account=user,car=, delivery_adress=adress)
+            print(rent_time)
+            car = Car.objects.filter(id=request.POST.get('car_id'))
+            rent = Rent.objects.create(account=user, car=car, rent_time=rent_time, delivery_adress=adress)
+            rent.calculate_price()
+            return redirect('home')
 
-        else:
-            return render(request, 'CzarCar/payment.html',{})
+        return render(request, 'CzarCar/payment.html', cars)
     else:
 
         messages.info(request, 'You need to add driving license')
-        return render(request, 'CzarCar/payment.html',{})
+        return redirect('home')
 
 
 def map_view(request):
@@ -113,20 +120,26 @@ def map_view(request):
 def profile_view(request):
     user = request.user
     driving_licenses = DrivingLicense.objects.filter(account=user)
-    if driving_licenses is None:
+    driving_licenses_count = driving_licenses.count()
+
+    if driving_licenses_count == 0:
 
         if request.method == 'POST':
-            form = EditDrivingLicenseForm(request.POST)
+            name = request.POST.get('name')
+            second_name = request.POST.get('secondname')
+            license_number = request.POST.get('license_number')
+            driving_license = DrivingLicense.objects.create(name=name, second_name=second_name,
+                                                            license_number=license_number, account=user)
 
-            if form.is_valid():
-                form.account = user
-                form.save()
-                return redirect('CzarCar/profile.html')
 
-        else:
-            form = EditDrivingLicenseForm(instance=request.user)
-            context = {'form': form}
-            return render(request, 'CzarCar/edit_profile.html', context)
+            return redirect('home')
+        # else:
+        #     messages.info(request, 'Something went wrong')
+
+        # else:
+
+        context = {}
+        return render(request, 'CzarCar/edit_profile.html', context)
     else:
 
         context = {'driving_licenses': driving_licenses}
@@ -135,10 +148,9 @@ def profile_view(request):
 
 @logged_user
 def your_rent_view(request):
+    # print(request.headers)
+    user = request.user
+    rents = Rent.objects.filter(account=user)
+    context = {'rents': rents}
 
-        # print(request.headers)
-        user = request.user
-        rents = Rent.objects.filter(account=user)
-        context = {'rents': rents}
-
-        return render(request, 'CzarCar/rented_cars.html', context)
+    return render(request, 'CzarCar/rented_cars.html', context)
