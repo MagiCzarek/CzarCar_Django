@@ -5,7 +5,7 @@ This my Django project of Car Rental website that proves my skills in Python
 ## Instalation:
 Install the required dependencies by running
 ```
-pip -r requirements.txt
+pip install -r requirements.txt
 ```
 In file settings.py you need to add your Django Secret Key
 ## Here are some screens of application
